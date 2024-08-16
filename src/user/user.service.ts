@@ -8,7 +8,6 @@ export class UserService {
     constructor(
         private readonly prismaService:PrismaService
     ){}
-
     async save(dto:createUserDto){
         const user = await this.getUserByIdOrMail(dto.mail)
         if(user){
