@@ -1,6 +1,7 @@
 import { PrismaService } from './../prisma/prisma.service';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { createUserDto } from './dto';
+import { hashSync } from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -13,8 +14,12 @@ export class UserService {
         if(user){
             throw new BadRequestException()
         }
+        const hashPassword = hashSync(dto.password, 5)
         return this.prismaService.users.create({
-            data: dto
+            data: {
+                mail: dto.mail,
+                password: hashPassword
+            }
         })
     }
 
