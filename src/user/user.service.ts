@@ -23,7 +23,7 @@ export class UserService {
     }
 
     async getUserByIdOrMail(idOrMail:string){
-        return await this.prismaService.users.findFirst({
+        const user =  await this.prismaService.users.findFirst({
             where:{
                 OR: [
                     {id:idOrMail},
@@ -31,5 +31,9 @@ export class UserService {
                 ]
             }
         })
+        if(!user){
+            throw new BadRequestException()
+        }
+        return user
     }
 }

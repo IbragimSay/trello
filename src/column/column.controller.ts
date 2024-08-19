@@ -2,7 +2,6 @@ import { ColumnService } from './column.service';
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Req, UseGuards } from '@nestjs/common';
 import { createColumnDto, updataColumnDto } from './dto';
 import { User } from 'src/auth/decorators';
-import { Payload } from '@prisma/client/runtime/library';
 import { JwtAuthGuard } from 'src/auth/guard';
 import { jwtPayload } from 'src/interface';
 import { IsColumnOwnerGuard } from './guard';
@@ -21,9 +20,9 @@ export class ColumnController {
     }
 
     @UseGuards(JwtAuthGuard)
-    @Get("")
-    getAll(@User() user:jwtPayload){
-        return this.columnService.getAll(user.id)
+    @Get("user/:userId")
+    getAll(@Param("userId") userId:string){
+        return this.columnService.getAll(userId)
     }
 
     @UseGuards(JwtAuthGuard)

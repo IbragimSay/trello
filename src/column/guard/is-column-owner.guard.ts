@@ -13,7 +13,6 @@ export class IsColumnOwnerGuard implements CanActivate {
     const req:Request = ctx.switchToHttp().getRequest()
     const columnId:number = parseInt(req.params.columnId)
     const user = req.user as jwtPayload
-    console.log(user)
     
 
     if (!user) {

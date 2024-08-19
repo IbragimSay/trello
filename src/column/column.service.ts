@@ -1,3 +1,5 @@
+import { User } from 'src/auth/decorators/get-user.decorator';
+import { UserService } from 'src/user/user.service';
 import { PrismaService } from './../prisma/prisma.service';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { createColumnDto, updataColumnDto } from './dto';
@@ -6,13 +8,16 @@ import { createColumnDto, updataColumnDto } from './dto';
 @Injectable()
 export class ColumnService {
     constructor(
-        private readonly prismaService:PrismaService
+        private readonly prismaService:PrismaService,
+        private readonly userService:UserService
+        
     ){}
 
     async getAll(userId:string){
+        const user = await this.userService.getUserByIdOrMail(userId)
         return await this.prismaService.columns.findMany({
             where:{
-                usersId:userId
+                usersId: user.id
             }
         })
     }
