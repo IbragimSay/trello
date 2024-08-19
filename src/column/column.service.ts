@@ -1,5 +1,5 @@
 import { PrismaService } from './../prisma/prisma.service';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { createColumnDto, updataColumnDto } from './dto';
 
 
@@ -27,6 +27,10 @@ export class ColumnService {
     }
     
     async delete(id:number){
+        const column = await this.getOne(id)
+        if(!column){
+            throw new BadRequestException()
+        }
         return await this.prismaService.columns.delete({
             where: {
                 id
@@ -38,6 +42,10 @@ export class ColumnService {
     }
 
     async update(dto:updataColumnDto, id:number){
+        const column = await this.getOne(id)
+        if(!column){
+            throw new BadRequestException()
+        }
         return await this.prismaService.columns.update({
             where: {
                 id
@@ -49,13 +57,14 @@ export class ColumnService {
     }
 
     async getOne(id:number){
-        return await this.prismaService.columns.findFirst({
+        const column = await this.prismaService.columns.findFirst({
             where: {
                 id
             }
         })
+        if(!column){
+            throw new BadRequestException()
+        }
+        return column
     }
-
-    
-
 }
