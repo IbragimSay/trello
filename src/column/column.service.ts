@@ -17,11 +17,11 @@ export class ColumnService {
         })
     }
 
-    async save(dto:createColumnDto){
+    async save(dto:createColumnDto, userId:string){
         return await this.prismaService.columns.create({
             data: {
                 text: dto.text,
-                usersId: dto.userId
+                usersId: userId
             }
         })
     }
