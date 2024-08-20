@@ -44,7 +44,10 @@ export class CommentService {
         if(!comment){
             throw new BadRequestException()
         }
-        return await this.prismaService.comments.create({
+        return await this.prismaService.comments.update({
+            where:{
+                id: commentId
+            },
             data: {
                 ...dto
             }
