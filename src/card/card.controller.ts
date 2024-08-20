@@ -5,6 +5,8 @@ import { createCardDto } from './dto';
 import { Request } from 'express';
 import { jwtPayload } from 'src/interface';
 import { JwtAuthGuard } from 'src/auth/guard';
+import { IsCardOwnerGuard } from './guard';
+import { IsColumnOwnerGuard } from 'src/column/guard';
 
 @Controller('card')
 export class CardController {
@@ -27,21 +29,20 @@ export class CardController {
         return await this.cardService.getAll(columnId)
     }
 
-
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, IsColumnOwnerGuard)
     @Post("column/:columnId")
     async create(@Body() dto:createCardDto, @Param("columnId", ParseIntPipe) columnId:number, @Req() req:Request){
         const user = req.user as jwtPayload
         return await this.cardService.save(dto, user.id, columnId)
     }
 
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, IsCardOwnerGuard)
     @Patch(":cardId")
     async updata(@Body() dto:createCardDto, @Param("cardId", ParseIntPipe) cardId:number, @Req() req:Request){
         return await this.cardService.updata(dto, cardId)
     }
 
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, IsCardOwnerGuard)
     @Delete(":cardId")
     async delete(@Param("cardId", ParseIntPipe) cardId:number){
         return await this.cardService.delete(cardId)

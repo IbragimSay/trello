@@ -1,0 +1,1 @@
+export * from "./is-card-owner.guard"
