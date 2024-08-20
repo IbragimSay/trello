@@ -5,6 +5,7 @@ import { Request } from 'express';
 import { jwtPayload } from 'src/interface';
 import { updataCommentDto } from './dto/updata-comment.dto';
 import { JwtAuthGuard } from 'src/auth/guard';
+import { IsCommentOwner } from './guard';
 
 @Controller('comment')
 export class CommentController {
@@ -33,13 +34,13 @@ export class CommentController {
         return await this.commentService.save(dto, user.id, cardId)
     }
 
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, IsCommentOwner)
     @Patch(":commentId")
     async updata(@Param("commentId", ParseIntPipe) commentId:number, @Body() dto: updataCommentDto){
         return await this.commentService.updata(dto, commentId)
     }
 
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, IsCommentOwner)
     @Delete(":commentId")
     async delete(@Param("commentId", ParseIntPipe) commentId:number){
         return await this.commentService.delete(commentId)

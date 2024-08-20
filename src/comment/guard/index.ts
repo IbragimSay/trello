@@ -1,0 +1,1 @@
+export * from "./is-comment-owner.guard"
