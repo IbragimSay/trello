@@ -31,9 +31,6 @@ export class UserService {
                 ]
             }
         })
-        if(!user){
-            throw new BadRequestException()
-        }
         return user
     }
 }

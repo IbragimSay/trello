@@ -14,10 +14,12 @@ datasource db {
 }
 
 model Users {
-  id       String    @id @default(uuid())
+  id       String     @id @default(uuid())
   mail     String
   password String
-  columns  Columns[]
+  Columns  Columns[]
+  Cards    Cards[]
+  Comments Comments[]
 }
 
 model Columns {
@@ -26,6 +28,7 @@ model Columns {
   Users   Users?  @relation(fields: [usersId], references: [id])
   usersId String?
   cards   Cards[]
+  order   Int
 }
 
 model Cards {
@@ -34,11 +37,17 @@ model Cards {
   Columns   Columns?   @relation(fields: [columnsId], references: [id])
   columnsId Int?
   comments  Comments[]
+  order     Int
+  Users     Users?     @relation(fields: [usersId], references: [id])
+  usersId   String?
 }
 
 model Comments {
-  id      Int    @id @default(autoincrement())
+  id      Int     @id @default(autoincrement())
   text    String
-  Cards   Cards? @relation(fields: [cardsId], references: [id])
+  Cards   Cards?  @relation(fields: [cardsId], references: [id])
   cardsId Int?
+  order   Int
+  Users   Users?  @relation(fields: [usersId], references: [id])
+  usersId String?
 }

@@ -25,7 +25,7 @@ export class ColumnService {
     async save(dto:createColumnDto, userId:string){
         return await this.prismaService.columns.create({
             data: {
-                text: dto.text,
+                ...dto,
                 usersId: userId
             }
         })
@@ -56,7 +56,7 @@ export class ColumnService {
                 id
             },
             data: {
-                text:dto.text,
+                ...dto
             }
         })
     }
