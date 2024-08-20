@@ -44,7 +44,7 @@ export class CardService {
         })
     }
 
-    async updata(dto:updataCardDto, userId:string, cardId: number){
+    async updata(dto:updataCardDto, cardId: number){
         const card = await this.getOne(cardId)
         if(!card){
             throw new BadRequestException()
